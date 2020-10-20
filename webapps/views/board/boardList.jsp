@@ -136,6 +136,32 @@ table {
 				
 
 		</div>
+		
+		<div class="btnArea" align="center">
+		
+			<% if(m != null) {%>
+			<br /><br />
+				<button onclick="location.href='views/board/boardInsertForm.jsp'"> 
+					작성하기
+				 </button>
+			
+			<script>
+			$(function(){
+				$('#listArea td').mouseenter(function(){
+					$(this).parent().css({"background" : "grey", "cursor" : "pointer"});
+				}).mouseout(function(){
+					$(this).parent().css({"background" : "black"});
+				}).click(function(){
+					var bno = $(this).parent().find('input').val();
+					location.href = "<%= request.getContextPath() %>/selectOne.bo?bno=" + bno;
+				});
+			});
+			</script>
+			<% } %>
+		
+		</div>
+		
+		
 	</div>
 
 	<%@ include file="../common/footer.jsp"%>

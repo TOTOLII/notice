@@ -115,4 +115,70 @@ public class BoardDAO {
 		return list;
 	}
 
+
+	public int insertBoard(Connection con, Board b) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("insertBoard");
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+
+			pstmt.setString(1, b.getBtitle());
+			pstmt.setString(2, b.getBcontent());
+			pstmt.setString(3, b.getBwriter());
+			pstmt.setString(4, b.getBoardfile());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+
+	public Board selectOne(Connection con, int bno) {
+		
+		Board b = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectOne");
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, bno);
+			rset = pstmt.executeQuery();
+			
+			if (rset.next()) {
+				
+				b = new Board();
+
+				b.setBno(rset.getInt("bno"));
+				b.setBtype(rset.getInt("btype"));
+				b.setBtitle(rset.getString("btitle"));
+				b.setBcontent(rset.getString("bcontent"));
+				b.setBwriter(rset.getString("username"));
+				b.setUserId(rset.getString("bwriter"));
+				b.setBcount(rset.getInt("bcount"));
+				b.setBoardfile(rset.getString("boardfile"));
+				b.setBdate(rset.getDate("bdate"));
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return b;
+	}
+
 }

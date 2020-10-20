@@ -31,5 +31,27 @@ public class BoardService {
 		
 		return list;
 	}
+	
+	public int insertBoard(Board b) {
+		con = getConnection();
+		int result = bDAO.insertBoard(con, b);
+		
+		if(result > 0 ) {
+			commit(con);
+		} else {
+			rollback(con);
+		} 
+		close(con);
+		return result;
+	}
+
+	public Board selectOne(int bno) {
+		
+		con = getConnection();
+		Board b = bDAO.selectOne(con, bno);
+		
+		close(con);
+		return b;
+	}
 
 }
