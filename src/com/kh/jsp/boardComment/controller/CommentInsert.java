@@ -1,30 +1,26 @@
-package com.kh.jsp.board.controller;
+package com.kh.jsp.boardComment.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kh.jsp.board.model.service.BoardService;
-import com.kh.jsp.board.model.vo.Board;
 import com.kh.jsp.boardComment.model.service.boardcommentService;
 import com.kh.jsp.boardComment.model.vo.BoardComment;
 
 /**
- * Servlet implementation class BoardSelectOne
+ * Servlet implementation class CommentInsert
  */
-@WebServlet("/selectOne.bo")
-public class BoardSelectOne extends HttpServlet {
+@WebServlet("/insertComment.co")
+public class CommentInsert extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardSelectOne() {
+    public CommentInsert() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,27 +29,24 @@ public class BoardSelectOne extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		// 작성자, 게시글 번호, 댓글 내용, 참조하는 댓글 번호, 댓글 레벨
+		String writer = request.getParameter("writer");
 		int bno = Integer.parseInt(request.getParameter("bno"));
-		Board b = new BoardService().selectOne(bno);
-		ArrayList<BoardComment> clist = new boardcommentService().selectList(bno);
+		String content = request.getParameter("replyContent");
+		int refcno = Integer.parseInt(request.getParameter("refcno"));
+		int clevel = Integer.parseInt(request.getParameter("clevel"));
 		
-		String page ="";
+		BoardComment comment = new BoardComment(bno, content, writer,refcno,clevel);
 		
-		if ( b != null) {
-			request.setAttribute("board", b);
-			request.setAttribute("clist", clist);
-			
-			page = "views/board/boardDetail.jsp";
+		int result = new boardcommentService().insertComment(comment);
+		
+		if(result > 0 ) {
+			response.sendRedirect("selectOne.bo?bno="+bno);
 		} else {
-			
-			request.setAttribute("error-msg", "게시글 상세조회 실패!");
-			page = "views/common/errorPage.jsp";
+			// 에러 페이지 작성  생략
 		}
-		
-		request.getRequestDispatcher(page).forward(request, response);
 	}
- 
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

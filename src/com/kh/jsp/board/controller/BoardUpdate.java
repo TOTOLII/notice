@@ -1,6 +1,8 @@
 package com.kh.jsp.board.controller;
 
+import java.io.File;
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -79,7 +81,7 @@ public class BoardUpdate extends HttpServlet {
 				File originFile = new File(savePath+"/"+b.getBoardfile());
 				System.out.println("파일 삭제 확인 : " + originFile.delete());
 			}
-			
+			// 새파일 등록
 			b.setBoardfile(fileName);
 		}
 		

@@ -59,7 +59,7 @@
 					<tr>
 						<td>기존 파일 </td>
 						<td colspan="3">
-							<a href="/myWeb/bfdown.bo?path=<%=b.getBoardfile()%>">
+							<a href="<%=request.getContextPath()%>/resources/bordUploadFiles<%=b.getBoardfile()%>">
 							<%=b.getBoardfile()%></a>	
 						</td>
 					</tr>

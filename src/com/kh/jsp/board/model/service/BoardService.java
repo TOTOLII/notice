@@ -54,4 +54,27 @@ public class BoardService {
 		return b;
 	}
 
+	public int updateBoard(Board b) {
+		con = getConnection();
+		int result = bDAO.updateBoard(con,b);
+		
+		if(result > 0 ) {
+			commit(con);
+		} else {
+			rollback(con);
+		}
+		return result;
+	}
+
+	public int deleteBoard(int bno) {
+		con = getConnection();
+		int result = bDAO.deleteBoard(con, bno);
+		
+		if( result > 0) {
+			commit(con);
+		} else {
+			rollback(con);
+		}
+		return result;
+	}
 }
